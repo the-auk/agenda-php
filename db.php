@@ -1,30 +1,19 @@
 <?php
-$password = "password";
 
-// Create connection
-$conn = new mysqli('localhost', 'root', $password);
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
-
-// Create database
-$sql = "CREATE DATABASE if NOT EXISTS Points";
+$link = mysqli_connect('localhost', 'root', "password");
+$query = "CREATE DATABASE if NOT EXISTS Points";
+mysqli_query($link, $query);
+mysqli_close($link);
+$link = mysqli_connect('localhost', 'root', "password", "points");
 $table1 = "CREATE TABLE CATEGORY (Name varchar(255))";
-$table2 = "CREATE TABLE AGENDAS (Title varchar(255),
+mysqli_query($link, $table1);
+$table2 = "CREATE TABLE AGENDAS (Title varchar(255) NOT NULL,
                                  Items varchar(255),
                                  aDate DATE,
-                                  aTime TIME,
-                                  Name varchar(255),
-                                  FOREIGN KEY (Name) REFERENCES CATEGORY(Name))";
-if ($conn->query($sql) === TRUE) {
-  echo "Database created successfully";
-  if ($conn->query($table1) === TRUE) {
-    if ($conn->query($table2) === TRUE) {
-      echo "table created";}}
-} else {
-  echo "Error creating database: " . $conn->error;
-}
-
-$conn->close();
+                                 aTime TIME,
+                                 Name varchar(255),
+                                 PRIMARY KEY (Title)
+                                 )";
+mysqli_query($link, $table2);
+mysqli_close($link);
 ?>
